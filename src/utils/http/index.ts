@@ -1,7 +1,6 @@
-import axios ,{Canceler}from 'axios';
+import axios, { Canceler, AxiosRequestConfig } from 'axios';
 import axiosCancel from './axiosCancel'
-const padding= new Map<string,Canceler>()
-let cancelToken = axios.CancelToken;
+import { IresponseData } from './types'
 const http = axios.create({
     baseURL: import.meta.env.BASE_URL
 })
@@ -19,10 +18,23 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     axiosCancel.removePadding(response.config)
-    return response;
+    return response.data;
 }, function (error) {
-    console.error('error:',error)
+    console.error('error:', error)
     // 对响应错误做点什么
     return Promise.reject(error);
 });
+
+export const _post = <T = any>(url: string, config: AxiosRequestConfig): Promise<IresponseData<T>> => {
+    return http.post(url, config)
+}
+export const _get = <T = any>(url: string, config: AxiosRequestConfig): Promise<IresponseData<T>> => {
+    return http.get(url, config)
+}
+export const _put = <T = any>(url: string, config: AxiosRequestConfig): Promise<IresponseData<T>> => {
+    return http.put(url, config)
+}
+export const _delete = <T = any>(url: string, config: AxiosRequestConfig): Promise<IresponseData<T>> => {
+    return http.delete(url, config)
+}
 export default http;

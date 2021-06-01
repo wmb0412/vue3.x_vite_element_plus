@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import styleImport from 'vite-plugin-style-import'
+import { viteMockServe } from 'vite-plugin-mock';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), styleImport({
@@ -16,10 +17,16 @@ export default defineConfig({
         return `element-plus/lib/${name}`;
       },
     }]
-  })],
+  }), viteMockServe({
+    // default
+    mockPath: 'mock',
+    localEnabled:true,
+    // localEnabled: command === 'serve',
+  }),],
   resolve: {
     alias: {
-      '@': '/src/'
+      '@': '/src/',
+      'utils':'/scr/utils'
     }
   },
 })

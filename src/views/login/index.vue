@@ -9,8 +9,8 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="用户名" prop="age">
-          <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="ruleForm.userName"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="passWord">
           <el-input
@@ -31,22 +31,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs} from "vue";
-
+import { login } from "@/api/login";
+import { defineComponent, reactive, ref, toRefs } from "vue";
+import {useRouter} from 'vue-router'
 export default defineComponent({
   setup() {
     const ruleForm = reactive({
-      name: "wmb",
-      passWord: "12345",
+      userName: "wmb",
+      passWord: "123456",
     });
     const rules = {
-      name: [{ required: true, message: "请选择活动资源", trigger: "change" }],
+      userName: [
+        { required: true, message: "请选择活动资源", trigger: "change" },
+      ],
       passWord: [
         { required: true, message: "请选择活动资源", trigger: "change" },
       ],
     };
+    const router=useRouter()
     const ruleFormRef = ref(null);
-    const submitForm = () => {};
+    const submitForm = async () => {
+      const res = await login({
+        passWord: ruleForm.passWord,
+        userName: ruleForm.userName,
+      });
+     if(!res.code){
+       router.push({
+         path:'/home'
+       })
+     }
+    };
     return {
       ruleFormRef: ruleFormRef,
       ruleForm: ruleForm,

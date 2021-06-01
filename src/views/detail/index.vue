@@ -8,7 +8,7 @@
   </ul>
 </template>
 
-<script>
+<script lang="ts">
 import { list } from "@/api/detail";
 import { nextTick, ref, reactive, toRefs } from "vue";
 export default {
@@ -18,6 +18,7 @@ export default {
       const res = await list();
       data.value = res.data.data;
     };
+    getList()
     return { data, getList };
   },
 };

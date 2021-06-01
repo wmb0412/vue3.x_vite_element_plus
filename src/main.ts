@@ -1,10 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index'
-
+import store ,{key} from '@/store/index'
 import './styles/index.scss'
 import 'element-plus/packages/theme-chalk/src/base.scss'
-
 import {
     ElAlert,
     ElAside,
@@ -186,8 +185,9 @@ components.forEach(component => {
     app.component(component.name, component)
 })
 
-// plugins.forEach(plugin => {
-//     app.use(plugin)
-// })
+plugins.forEach(plugin => {
+    app.use(plugin)
+})
+app.use(store,key)
 app.use(router)
 app.mount('#app')
