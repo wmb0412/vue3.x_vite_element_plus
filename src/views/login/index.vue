@@ -19,7 +19,10 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-
+        <el-form-item label="角色" prop="role">
+          <el-radio v-model="ruleForm.role" :label="1">管理员</el-radio>
+          <el-radio v-model="ruleForm.role" :label="0">普通用户</el-radio>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
             >提交</el-button
@@ -33,12 +36,15 @@
 <script lang="ts">
 import { login } from "@/api/login";
 import { defineComponent, reactive, ref, toRefs } from "vue";
-import {useRouter} from 'vue-router'
+import { useRouter } from "vue-router";
+import { useStore } from "@/store";
 export default defineComponent({
   setup() {
+    const store = useStore();
     const ruleForm = reactive({
       userName: "wmb",
       passWord: "123456",
+      role: 1,
     });
     const rules = {
       userName: [
@@ -48,18 +54,9 @@ export default defineComponent({
         { required: true, message: "请选择活动资源", trigger: "change" },
       ],
     };
-    const router=useRouter()
     const ruleFormRef = ref(null);
     const submitForm = async () => {
-      const res = await login({
-        passWord: ruleForm.passWord,
-        userName: ruleForm.userName,
-      });
-     if(!res.code){
-       router.push({
-         path:'/home'
-       })
-     }
+      store.dispatch('user/login',ruleForm)
     };
     return {
       ruleFormRef: ruleFormRef,

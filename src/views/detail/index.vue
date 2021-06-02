@@ -1,28 +1,19 @@
 <template>
-  <el-button @click="getList"> 获取数据</el-button>
-  <ul>
-    <li v-for="(user, index) in data" :key="index">
-      <div>name:{{ user.name }}</div>
-      <div>age:{{ user.age }}</div>
-    </li>
-  </ul>
+  <div>
+    {{ title }}
+  </div>
 </template>
 
 <script lang="ts">
-import { list } from "@/api/detail";
-import { nextTick, ref, reactive, toRefs } from "vue";
+import { useRoute } from "vue-router";
 export default {
   setup() {
-    const data = ref([]);
-    const getList = async () => {
-      const res = await list();
-      data.value = res.data.data;
-    };
-    getList()
-    return { data, getList };
+    const route = useRoute();
+    const { title } = route.query;
+    return { title };
   },
 };
 </script>
 
-<style  scoped>
+<style lang="scss" scoped>
 </style>
