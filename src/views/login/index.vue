@@ -48,10 +48,10 @@ export default defineComponent({
     });
     const rules = {
       userName: [
-        { required: true, message: "请选择活动资源", trigger: "change" },
+        { required: true, message: "请输入userName", trigger: "change" },
       ],
       passWord: [
-        { required: true, message: "请选择活动资源", trigger: "change" },
+        { required: true, message: "请输入passWord", trigger: "change" },
       ],
     };
     const ruleFormRef = ref(null);

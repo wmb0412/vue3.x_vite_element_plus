@@ -1,38 +1,64 @@
 import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import { afterEach, beforeEach } from './guard'
-import detail from '@/views/detail/index.vue'
-import home from '@/views/home/index.vue'
-import NotFound from '@/views/404.vue'
-import NotPower from '@/views/403.vue'
-import power from '@/views/power/index.vue'
-import login from '@/views/login/index.vue'
-const routes = [{path:'/',redirect:'/login'},{
-    path: '/login', component: login, meta: {
+const routes = [
+    {
+        path: '/',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
+        component: () => import('@/views/login/index.vue'),
+        meta: {
 
-    }
-}, {
-    path: '/detail',
-    component: detail,
-    meta: {
+        }
+    },
+    {
+        path: '/',
+        component: () => import('@/layouts/index.vue'),
+        meta: {
 
-    }
-},
-{
-    path: '/home', component: home, meta: {
+        },
+        children: [{
+            path: '/home',
+            component: () => import('@/views/home/index.vue'),
+            meta: {
+            },
+        }, {
+            path: '/power',
+            component: () => import('@/views/power/index.vue'),
+            meta: {
+                role: [1]
+            }
+        }, {
+            path: '/detail',
+            component: () => import('@/views/detail/index.vue'),
+            meta: {
+            }
+        }, {
+            path: '/403',
+            component: () => import('@/views/403.vue')
+        },]
 
-    }
-}, {
-    path: '/power', component: power, meta: {
-        role: [1]
-    }
-}, {
-    path: '/403', component: NotPower
-}, {
-    path: '/:pathMatch(.*)', component: NotFound
-}];
+    },
+    {
+        path: '/:pathMatch(.*)',
+        component: () => import('@/views/404.vue')
+    }];
 const router = createRouter({
     history: createWebHistory(),
-    routes: routes
+    routes: routes,
+    scrollBehavior: (to, from, savedPosition) => {
+        if (!savedPosition) {
+            return {
+                top: 0
+            }
+        }
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(savedPosition)
+            }, 100)
+        })
+    }
 })
 router.afterEach(afterEach)
 router.beforeEach(beforeEach)

@@ -11,27 +11,36 @@
 
     <div class="cards-box">
       <el-card
-        style="width: 200px"
+        style="width: 200px;margin:30px"
         v-for="(item, index) in listData"
         :key="index"
       >
         <template #header>
           <div class="card-header">
             <span>{{ item.title }}</span>
-            <el-button @click="handelClickGoods(item)" class="button" type="text">进入</el-button>
+            <el-button
+              @click="handelClickGoods(item)"
+              class="button"
+              type="text"
+              >进入</el-button
+            >
           </div>
         </template>
         <div>价格： ¥{{ item.price }}</div>
       </el-card>
     </div>
-
-    <!-- <VuexDemo /> -->
   </div>
 </template>
 
 <script lang="ts">
 // import VuexDemo from "@/components/VuexDemo.vue";
-import { defineComponent, defineAsyncComponent, ref, onMounted } from "vue";
+import {
+  defineComponent,
+  defineAsyncComponent,
+  ref,
+  onMounted,
+  onActivated,
+} from "vue";
 import { computed } from "@vue/runtime-core";
 import { useStore } from "@/store/index";
 import { useRouter } from "vue-router";
@@ -41,15 +50,19 @@ export default defineComponent({
     VuexDemo: defineAsyncComponent(() => import("@/components/VuexDemo.vue")),
   },
   setup() {
+    onActivated(() => {
+      console.log("onActivated");
+    });
     const { role, handelClick } = usePower();
     const { showVuexDemo, changeShowVuexDemo } = useLoadComponent();
-    const { listData,handelClickGoods } = useGoods();
+    const { listData, handelClickGoods } = useGoods();
     return {
       role,
       handelClick,
       showVuexDemo,
       changeShowVuexDemo,
-      listData,handelClickGoods
+      listData,
+      handelClickGoods,
     };
   },
 });
@@ -109,7 +122,6 @@ function useGoods() {
 }
 .cards-box {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
 }
 </style>

@@ -5,15 +5,15 @@ export const list = () => {
         response: ({ query }) => {
             return {
                 code: 0,
-                "data|10-15": [
+                "data|26": [
                     {
                         "id|+1": 0,
                         "title|+1": [
-                            /上衣[a-z]{3,4}/,
-                            /短袖[a-z]{3,4}/,
-                            /裤子[a-z]{3,4}/
+                            /上衣/,
+                            /短袖/,
+                            /裤子/
                         ],
-                        "price|1-100": 0
+                        "price|+3": 0
                     }
                 ]
             };
